@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>dotNetRDF</id>
+    <version>1.0.7.3471</version>
+    <authors>RobVesse, tpluscode, kal_ahmed, ronmichael</authors>
+    <owners>RobVesse, tpluscode, kal_ahmed, ronmichael</owners>
+    <licenseUrl>http://www.opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>http://www.dotnetrdf.org/</projectUrl>
+    <iconUrl>http://www.w3.org/RDF/icons/rdf_w3c_icon.128.gif</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>dotNetRDF is a RDF, SPARQL and Semantic Web API for .Net.  It provides simple but powerfully extensible APIs for this and integrates with a variety of popular triple stores.</description>
+    <releaseNotes>- Ensure AssemblyVersion's are synced with NuGet package versions (CORE-426)
+- Bug fix for missing ToString() on UUID() and StrUUID() functions (CORE-427)
+- Bug fix for corner case SPARQL parsing bug involving BIND (CORE-428)
+- Bug fix for RDF/XML output under MonoTouch
+- Update dependencies to latest versions</releaseNotes>
+    <tags>RDF Semantic Web SPARQL RDF/XML Turtle Notation3</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework3.5-Client">
+        <dependency id="VDS.Common" version="[1.4.0]" />
+        <dependency id="Newtonsoft.Json" version="6.0.6" />
+        <dependency id="HtmlAgilityPack" version="1.4.9" />
+      </group>
+      <group targetFramework=".NETFramework3.5">
+        <dependency id="VDS.Common" version="[1.4.0]" />
+        <dependency id="Newtonsoft.Json" version="6.0.6" />
+        <dependency id="HtmlAgilityPack" version="1.4.9" />
+      </group>
+      <group targetFramework=".NETFramework4.0">
+        <dependency id="VDS.Common" version="[1.4.0]" />
+        <dependency id="Newtonsoft.Json" version="6.0.6" />
+        <dependency id="HtmlAgilityPack" version="1.4.9" />
+      </group>
+      <group targetFramework=".NETFramework4.0-Client">
+        <dependency id="VDS.Common" version="[1.4.0]" />
+        <dependency id="Newtonsoft.Json" version="6.0.6" />
+        <dependency id="HtmlAgilityPack" version="1.4.9" />
+      </group>
+      <group targetFramework=".NETPortable0.0-net40+sl40+win+wp80+MonoAndroid10+MonoTouch10">
+        <dependency id="VDS.Common" version="[1.4.0]" />
+        <dependency id="Newtonsoft.Json" version="6.0.6" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

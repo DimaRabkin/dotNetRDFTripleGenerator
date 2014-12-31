@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>VDS.Common</id>
+    <version>1.4.0</version>
+    <title>VDS.Common</title>
+    <authors>RobVesse, kal_ahmed</authors>
+    <owners>RobVesse, kal_ahmed</owners>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>http://bitbucket.org/rvesse/vds-common</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A library containing useful data structures like Trees, Tries, Sparse Arrays, Bloom Filters and indexing tailored dictionaries.</description>
+    <releaseNotes>- Minor improvements to MaterializedImmutableView
+- Add new ISparseArray interface and implementations
+- Add new IBloomFilter interface and implementations
+- Add FindSuccessor() and FindPredecessor() to ITrie (thanks to Mike Davies)</releaseNotes>
+    <tags>Data Structures Tree Trie AVL Scapegoat Dictionary Collections Sparse Arrays Bloom Filters</tags>
+  </metadata>
+</package>

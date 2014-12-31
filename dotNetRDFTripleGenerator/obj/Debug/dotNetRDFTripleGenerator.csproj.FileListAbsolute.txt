@@ -1,0 +1,15 @@
+c:\users\dimanew\documents\visual studio 2012\Projects\dotNetRDFTripleGenerator\dotNetRDFTripleGenerator\bin\Debug\dotNetRDFTripleGenerator.dll
+c:\users\dimanew\documents\visual studio 2012\Projects\dotNetRDFTripleGenerator\dotNetRDFTripleGenerator\bin\Debug\dotNetRDFTripleGenerator.pdb
+c:\users\dimanew\documents\visual studio 2012\Projects\dotNetRDFTripleGenerator\dotNetRDFTripleGenerator\bin\Debug\dotNetRDF.dll
+c:\users\dimanew\documents\visual studio 2012\Projects\dotNetRDFTripleGenerator\dotNetRDFTripleGenerator\bin\Debug\HtmlAgilityPack.dll
+c:\users\dimanew\documents\visual studio 2012\Projects\dotNetRDFTripleGenerator\dotNetRDFTripleGenerator\bin\Debug\Newtonsoft.Json.dll
+c:\users\dimanew\documents\visual studio 2012\Projects\dotNetRDFTripleGenerator\dotNetRDFTripleGenerator\bin\Debug\VDS.Common.dll
+c:\users\dimanew\documents\visual studio 2012\Projects\dotNetRDFTripleGenerator\dotNetRDFTripleGenerator\bin\Debug\dotNetRDF.xml
+c:\users\dimanew\documents\visual studio 2012\Projects\dotNetRDFTripleGenerator\dotNetRDFTripleGenerator\bin\Debug\HtmlAgilityPack.pdb
+c:\users\dimanew\documents\visual studio 2012\Projects\dotNetRDFTripleGenerator\dotNetRDFTripleGenerator\bin\Debug\HtmlAgilityPack.xml
+c:\users\dimanew\documents\visual studio 2012\Projects\dotNetRDFTripleGenerator\dotNetRDFTripleGenerator\bin\Debug\Newtonsoft.Json.xml
+c:\users\dimanew\documents\visual studio 2012\Projects\dotNetRDFTripleGenerator\dotNetRDFTripleGenerator\bin\Debug\VDS.Common.pdb
+c:\users\dimanew\documents\visual studio 2012\Projects\dotNetRDFTripleGenerator\dotNetRDFTripleGenerator\bin\Debug\VDS.Common.xml
+c:\users\dimanew\documents\visual studio 2012\Projects\dotNetRDFTripleGenerator\dotNetRDFTripleGenerator\obj\Debug\dotNetRDFTripleGenerator.csprojResolveAssemblyReference.cache
+c:\users\dimanew\documents\visual studio 2012\Projects\dotNetRDFTripleGenerator\dotNetRDFTripleGenerator\obj\Debug\dotNetRDFTripleGenerator.dll
+c:\users\dimanew\documents\visual studio 2012\Projects\dotNetRDFTripleGenerator\dotNetRDFTripleGenerator\obj\Debug\dotNetRDFTripleGenerator.pdb
