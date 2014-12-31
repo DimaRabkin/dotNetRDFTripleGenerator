@@ -2,6 +2,7 @@ using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using dotNetRDFTripleGenerator.Attributes;
@@ -42,6 +43,11 @@ namespace dotNetRDFTripleGenerator
             var result = provider.CompileAssemblyFromDom(parameters, compileunit);
             if (result.Errors.Count > 0)
             {
+                using (var writer = new StreamWriter("error.txt"))
+                {
+                    provider.GenerateCodeFromCompileUnit(compileunit, writer, new CodeGeneratorOptions { BracingStyle = "C"});
+                }
+                
                 throw new Exception(string.Join(",", result.Errors.Cast<CompilerError>().Select(error => error.ErrorText)));
             }
             IFactory generatedFactory = (IFactory)Activator.CreateInstance(result.CompiledAssembly.GetType(factoryTypeName), _adapter);
@@ -65,7 +71,7 @@ namespace dotNetRDFTripleGenerator
 
             factoryClass.BaseTypes.Add(new CodeTypeReference(typeof(IFactory)));
 
-            CodeMemberField field = CreateAdapterField(type);
+            CodeMemberField field = CreateAdapterField();
             factoryClass.Members.Add(field);
 
             CodeConstructor constructor = CreateConstructor();
@@ -94,7 +100,7 @@ namespace dotNetRDFTripleGenerator
             return constructor;
         }
 
-        private static CodeMemberField CreateAdapterField(Type type)
+        private static CodeMemberField CreateAdapterField()
         {
             var field = new CodeMemberField(typeof(LiteralNodeAdapter), "_adapter");
             return field;
@@ -142,14 +148,13 @@ namespace dotNetRDFTripleGenerator
             // subject node
             var subjectPropertyReference = new CodePropertyReferenceExpression(castedVariable, subjectProperty.Name);
             const string subjectNodeName = "subjectNode";
-            var subjectNodeDeclaration = new CodeVariableDeclarationStatement(typeof(INode), subjectNodeName);
 
+            var subjectStatements = CreateNodeStatements(subjectNodeName,
+                CreateUriExpression(adapterReference, new CodeBinaryOperatorExpression(new CodePrimitiveExpression(subjectPrefix), CodeBinaryOperatorType.Add, subjectPropertyReference)));
+            
             var subjectNodeReference = new CodeVariableReferenceExpression(subjectNodeName);
 
-            var subjectNodeAssignment = new CodeAssignStatement(subjectNodeReference,
-                new CodeMethodInvokeExpression(adapterReference, "CreateUriNode", new CodePrimitiveExpression(subjectPrefix), subjectPropertyReference));
-
-            result.AddRange(new CodeStatement[] { subjectNodeDeclaration, subjectNodeAssignment });
+            result.AddRange(subjectStatements);
 
             // object nodes
             var objectProperties = type.GetProperties()
@@ -157,32 +162,34 @@ namespace dotNetRDFTripleGenerator
                 .Where(tuple => tuple.ObjectAttribute != null)
                 .Select(tuple => new { tuple.PropertyName, tuple.ObjectAttribute.Prefix, tuple.ObjectAttribute.Predicate });
 
-
-
             foreach (var objectProperty in objectProperties)
             {
                 var propertyName = objectProperty.PropertyName;
+
+                var emptyLine = new CodeSnippetStatement();
+                var comment = new CodeCommentStatement(propertyName);
+                result.AddRange(new CodeStatement[] { emptyLine, comment });
+
                 var objectNodeName = string.Format("{0}ObjectNode", propertyName.ToLower());
-                var objectNodeDeclaration = new CodeVariableDeclarationStatement(typeof(INode), objectNodeName);
+                var objectNodeStatements = CreateNodeStatements(objectNodeName,
+                    CreateLiteralExpression(adapterReference, new CodePropertyReferenceExpression(castedVariable, propertyName)));
+
                 var objectNodeReference = new CodeVariableReferenceExpression(objectNodeName);
-                var objectNodeAssignment = new CodeAssignStatement(objectNodeReference,
-                    new CodeMethodInvokeExpression(adapterReference, "CreateLiteralNode",
-                        new CodePropertyReferenceExpression(castedVariable, propertyName)));
 
                 string predicateNodeName = string.Format("{0}PredicateNode", propertyName.ToLower());
-                var predicateNodeDeclaration = new CodeVariableDeclarationStatement(typeof(INode), predicateNodeName);
+                var predicateNodeStatements = CreateNodeStatements(predicateNodeName,
+                    CreateUriExpression(adapterReference, new CodePrimitiveExpression(objectProperty.Predicate)));
+
                 var predicateNodeReference = new CodeVariableReferenceExpression(predicateNodeName);
-                var predicateNodeAssignment = new CodeAssignStatement(predicateNodeReference,
-                    new CodeMethodInvokeExpression(adapterReference, "CreateUriNode", new CodePrimitiveExpression(objectProperty.Predicate)));
 
                 var tripleCtor = new CodeObjectCreateExpression(typeof(Triple), subjectNodeReference, predicateNodeReference,
                     objectNodeReference);
 
                 var tripleAddStatement = new CodeExpressionStatement(new CodeMethodInvokeExpression(resultReference, "Add", tripleCtor));
 
-                var emptyLine = new CodeSnippetStatement();
-                var comment = new CodeCommentStatement(propertyName);
-                result.AddRange(new CodeStatement[] { emptyLine, comment, objectNodeDeclaration, objectNodeAssignment, predicateNodeDeclaration, predicateNodeAssignment, tripleAddStatement });
+                result.AddRange(objectNodeStatements);
+                result.AddRange(predicateNodeStatements);
+                result.Add(tripleAddStatement);
             }
 
             var returnStatement = new CodeMethodReturnStatement(resultReference);
@@ -190,8 +197,23 @@ namespace dotNetRDFTripleGenerator
             return result;
         }
 
+        public static CodeStatement[] CreateNodeStatements(string nodeName, CodeExpression assingmentExpression)
+        {
+            var subjectNodeDeclaration = new CodeVariableDeclarationStatement(typeof(INode), nodeName);
+            var subjectNodeReference = new CodeVariableReferenceExpression(nodeName);
+            var subjectNodeAssignment = new CodeAssignStatement(subjectNodeReference, assingmentExpression);
 
+            return new CodeStatement[] { subjectNodeDeclaration, subjectNodeAssignment};
+        }
 
+        public static CodeExpression CreateUriExpression(CodeExpression adapterReference, CodeExpression parameter)
+        {
+            return new CodeMethodInvokeExpression(adapterReference, "CreateUriNode", parameter);
+        }
 
+        public static CodeExpression CreateLiteralExpression(CodeExpression adapterReference, CodeExpression parameter)
+        {
+            return new CodeMethodInvokeExpression(adapterReference, "CreateLiteralNode", parameter);
+        }
     }
 }

@@ -6,7 +6,6 @@ namespace dotNetRDFTripleGenerator
     {
         INode CreateLiteralNode(object obj);
 
-        INode CreateUriNode(string prefix, object obj);
         INode CreateUriNode(string uri);
     }
 }

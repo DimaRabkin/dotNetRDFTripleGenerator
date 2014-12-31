@@ -34,11 +34,6 @@ namespace dotNetRDFTripleGenerator
             return handler(obj, _nodeFactory);
         }
 
-        public INode CreateUriNode(string prefix, object obj)
-        {
-            return CreateUriNode(prefix + obj);
-        }
-
         public INode CreateUriNode(string uri)
         {
             return _nodeFactory.CreateUriNode(UriFactory.Create(uri));
