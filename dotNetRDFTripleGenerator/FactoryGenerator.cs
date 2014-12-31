@@ -24,11 +24,11 @@ namespace dotNetRDFTripleGenerator
             string factoryTypeName;
             var compilationUnit = CreateCompilationUnit(type, out factoryTypeName);
 
-            IFactory generatedFactory = GenerateFactory(compilationUnit, factoryTypeName);
+            IFactory generatedFactory = GenerateFactory(compilationUnit, factoryTypeName, type);
             return generatedFactory;
         }
 
-        public IFactory GenerateFactory(CodeCompileUnit compileunit, string factoryTypeName)
+        public IFactory GenerateFactory(CodeCompileUnit compileunit, string factoryTypeName, Type generatedType)
         {
             // Generate the code with the C# code provider.
             CSharpCodeProvider provider = new CSharpCodeProvider();
@@ -37,7 +37,8 @@ namespace dotNetRDFTripleGenerator
             parameters.ReferencedAssemblies.Add("System.dll");
             parameters.ReferencedAssemblies.Add("System.Xml.dll");
             parameters.ReferencedAssemblies.Add(typeof(Triple).Assembly.Location);
-            parameters.ReferencedAssemblies.Add(typeof(LiteralNodeAdapter).Assembly.Location);
+            parameters.ReferencedAssemblies.Add(GetType().Assembly.Location);
+            parameters.ReferencedAssemblies.Add(generatedType.Assembly.Location);
             var result = provider.CompileAssemblyFromDom(parameters, compileunit);
             if (result.Errors.Count > 0)
             {
